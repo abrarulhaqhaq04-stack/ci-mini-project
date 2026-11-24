@@ -59,6 +59,7 @@ pipeline {
         failure {
             echo "Pipeline failed. Please check the logs for details......"
             echo "Sending notification to the team..."
+            echo "Notification sent to the team."
         }
     }
 }
