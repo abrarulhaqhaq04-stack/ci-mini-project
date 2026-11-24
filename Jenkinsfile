@@ -48,6 +48,7 @@ pipeline {
                 sh 'echo "Deploying ${APP_NAME} version ${VERSION} to ${params.Environment}"'
             }
         }
+    }
         post {
             always {
                 echo "Cleaning up workspace..."
@@ -61,4 +62,4 @@ pipeline {
             echo "Pipeline failed. Please check the logs for details......"
         }
     }
-}
+
