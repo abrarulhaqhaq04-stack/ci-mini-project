@@ -54,7 +54,6 @@ pipeline {
                 echo "Cleaning up workspace..."
                 cleanWs()
             }
-        }
         success {
             echo "Pipeline completed successfully!"
         }
@@ -62,4 +61,5 @@ pipeline {
             echo "Pipeline failed. Please check the logs for details......"
         }
     }
+}
 
