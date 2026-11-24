@@ -45,14 +45,13 @@ pipeline {
             }
             steps {
                 echo "Deploying the application to ${params.Environment} environment..."
-                sh 'echo "Deploying ${APP_NAME} version ${VERSION} to ${params.Environment}"'
+                sh "echo Deploying ${APP_NAME} version ${VERSION} to ${params.Environment}"
             }
         }
     }
         post {
             always {
                 echo "Cleaning up workspace..."
-                cleanWs()
             }
         success {
             echo "Pipeline completed successfully!"
