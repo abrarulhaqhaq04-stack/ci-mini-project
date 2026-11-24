@@ -7,7 +7,7 @@ pipeline {
     }
 
     parameters {
-        choices(name: 'Environment', choices: ['dev', 'qa', 'prod'], description: 'Select the environment to deploy')
+        choice(name: 'Environment', choices: ['dev', 'qa', 'prod'], description: 'Select the environment to deploy')
         booleanParam(name: 'Deploy', defaultValue: true, description: 'Check to deploy the application')
     }
 
@@ -27,13 +27,16 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo "Running tests..."
-                if  (grep -q "Hello" test.txt); then
-                    echo "Test passed"
-                else
-                    error "Test failed"
-                fi
-                sh 'echo "Tests completed for ${APP_NAME}"'
+                sh '''
+                    echo "Hello World" > test.txt
+
+                    if grep -q "Hello" test.txt; then
+                        echo "Test passed"
+                    else
+                        echo "Test failed"
+                        exit 1
+                    fi
+                '''
             }
         }
         stage('Deploy') {
