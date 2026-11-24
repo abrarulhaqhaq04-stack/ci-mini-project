@@ -28,7 +28,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo "Running tests..."
-                if grep -q "Hello" test.txt; then
+                if  (grep -q "Hello" test.txt); then
                     echo "Test passed"
                 else
                     error "Test failed"
