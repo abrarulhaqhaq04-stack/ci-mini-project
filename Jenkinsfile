@@ -27,16 +27,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh '''
-                    echo "Hello World" > test.txt
-
-                    if grep -q "Hello" test.txt; then
-                        echo "Test passed"
-                    else
-                        echo "Test failed"
-                        exit 1
-                    fi
-                '''
+               sh './test.sh'
             }
         }
         stage('Deploy') {
