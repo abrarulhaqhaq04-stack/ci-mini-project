@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+    environment {
+        PATH = "C:\\Users\\abrar ul haq\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\;${env.PATH}"
+    IMAGE_NAME = 'hello-app'
+    }
+    stages {
+        stage('Build docke image') {
+            steps {
+                echo "Building Docker image..."
+                sh 'docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .'
+            }
+        }
+        stage('Run docker image') {
+            steps {
+                echo "Running Docker image..."
+                sh 'docker run --rm ${IMAGE_NAME}:${BUILD_NUMBER}'
+            }
+        }
+        stage('list iamges') {
+            steps {
+                echo "Listing Docker images..."
+                sh 'docker images'
+            }
+        }
+    }
+}
