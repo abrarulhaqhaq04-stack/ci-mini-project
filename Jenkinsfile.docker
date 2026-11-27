@@ -2,25 +2,35 @@ pipeline {
     agent any
     environment {
         PATH = "C:\\Users\\abrar ul haq\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\;${env.PATH}"
-    IMAGE_NAME = 'hello-app'
+    IMAGE = "abrar33001/hello-app"
+    DOCKER_CONFIG = "$WORKSPACE/.docker"
     }
     stages {
-        stage('Build docke image') {
+        stage('Build docker image') {
             steps {
                 echo "Building Docker image..."
-                sh 'docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .'
+                sh 'docker build -t ${IMAGE}:${BUILD_NUMBER} -t ${IMAGE}:latest .'
             }
         }
-        stage('Run docker image') {
+        stage('Push docker image') {
             steps {
-                echo "Running Docker image..."
-                sh 'docker run --rm ${IMAGE_NAME}:${BUILD_NUMBER}'
+                echo "Pushing Docker image..."
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                   sh 'docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}'
+                    sh 'docker push ${IMAGE}:${BUILD_NUMBER}'
+                    sh 'docker push ${IMAGE}:latest'
+                }
             }
         }
-        stage('list iamges') {
+        stage('list images') {
             steps {
                 echo "Listing Docker images..."
                 sh 'docker images'
+            }
+        }
+        post {
+            always {
+              sh 'docker logout'
             }
         }
     }
