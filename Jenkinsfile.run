@@ -1,0 +1,32 @@
+pipeline {
+    agent any 
+    environment {
+        PATH = "C:\\Users\\abrar ul haq\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\;${env.PATH}"
+        IMAGE = "abrar33001/hello-app"
+        CONTAINER_NAME = "hello-web"
+    }
+    stages {
+        stage('Build image') {
+            steps {
+                sh 'docker build -t ${IMAGE}:${BUILD_NUMBER} -t ${IMAGE}:latest .'
+            }
+        }
+        stage('stop old container') {
+            steps {
+                sh 'docker rm -f ${CONTAINER_NAME} || true'
+            }
+        }
+        stage('Run container') {
+            steps {
+                sh 'docker run -d --name ${CONTAINER_NAME} -p 3000:3000 ${IMAGE}:${BUILD_NUMBER}'
+            }
+        }
+        stage('verify') {
+            steps {
+                sh 'sleep 3'
+                sh 'docker ps --filter name=${CONTAINER_NAME}'
+                sh 'docker logs ${CONTAINER_NAME}'
+            }
+        }
+    }
+}
